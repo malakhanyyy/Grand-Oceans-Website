@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Oceans Hospitality | Group Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" integrity="sha512-RX/OFugIG/bvlqwqT/1z4hVf4y/w5xsh2yHDiP25A11e2E2kwe2O//j8//y+rRz3OQk1Zc6+cRzQO7gBfRjS4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FAFAFA; overflow-x: hidden; perspective: 1000px; }
+        h1, h2, h3, .serif-font { font-family: 'Playfair Display', serif; }
+        
+        .hero-wrapper { position: relative; height: 100vh; z-index: 40; perspective: 1000px; transform-style: preserve-3d; }
+        .hero-bg-container { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        .hero-bg {
+            position: absolute; inset: -5%;
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+            animation: slowZoom 30s infinite alternate ease-in-out;
+            transform: translateZ(-100px) scale(1.2);
+        }
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .parallax-element { position: absolute; border-radius: 50%; filter: blur(8px); pointer-events: none; transition: transform 0.1s ease-out; }
+        .parallax-1 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(202,138,4,0.15) 0%, rgba(0,0,0,0) 70%); top: 10%; left: 15%; }
+        .parallax-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%); bottom: 20%; right: 5%; }
+        .parallax-3 { width: 200px; height: 200px; border: 1px solid rgba(255,255,255,0.05); top: 50%; left: 80%; border-radius: 20px; transform: rotate(45deg); filter: none; }
+
+        .glass-panel {
+            background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            transform-style: preserve-3d;
+        }
+
+        .custom-popup {
+            visibility: hidden; opacity: 0; transform: translateY(10px) rotateX(10deg);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: absolute; top: 120%; left: 0; width: 320px;
+            background: #111; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; padding: 20px; z-index: 100;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform-origin: top;
+        }
+        .date-group:hover .custom-popup { visibility: visible; opacity: 1; transform: translateY(0) rotateX(0); }
+
+        .reveal-3d {
+            opacity: 0;
+            transform: translateY(60px) rotateX(-15deg) scale(0.95);
+            transition: all 1.2s cubic-bezier(0.25, 1, 0.2, 1);
+            transform-origin: center bottom;
+        }
+        .reveal-3d.active {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg) scale(1);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        .tilt-wrapper { transform-style: preserve-3d; transform: perspective(1000px); }
+        .tilt-image { transform: translateZ(50px); }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <header class="fixed top-0 w-full z-50 py-6 px-8 flex justify-between items-center text-white bg-gradient-to-b from-black/90 to-transparent backdrop-blur-sm border-b border-white/10 transition-all">
+        <div class="serif-font text-2xl tracking-widest uppercase cursor-pointer flex flex-col">
+            Grand Oceans
+            <span class="font-sans text-[9px] tracking-[0.4em] opacity-80 text-yellow-500 mt-1">Hospitality Group</span>
+        </div>
+        
+        <nav class="hidden lg:flex space-x-8 text-[11px] font-semibold uppercase tracking-[0.2em] items-center">
+            <a href="#home" class="hover:text-yellow-300 transition-colors duration-300">Home</a>
+            <a href="#about" class="hover:text-yellow-300 transition-colors duration-300">About</a>
+            <div class="relative group py-4">
+                <span class="hover:text-yellow-300 transition-colors duration-300 flex items-center cursor-pointer">
+                    Our Hotels <i class="fa-solid fa-chevron-down ml-2 text-[8px]"></i>
+                </span>
+                <div class="absolute left-0 top-full w-56 bg-zinc-950/95 backdrop-blur-md border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 rounded-sm shadow-2xl">
+                    <a href="sokhna.html" class="block px-5 py-4 text-[10px] text-white/80 hover:text-yellow-400 hover:bg-white/5 border-b border-white/10 transition-colors">Grand Ocean Sokhna</a>
+                    <a href="#brands" class="block px-5 py-4 text-[10px] text-white/80 hover:text-yellow-400 hover:bg-white/5 transition-colors">Stay Inn Hotels</a>
+                </div>
+            </div>
+            <a href="#dining" class="hover:text-yellow-300 transition-colors duration-300">Dining</a>
+            <a href="#news" class="hover:text-yellow-300 transition-colors duration-300">News</a>
+            <a href="#careers" class="hover:text-yellow-300 transition-colors duration-300">Careers</a>
+            <a href="#contact" class="hover:text-yellow-300 transition-colors duration-300">Contact Us</a>
+        </nav>
+
+        <div>
+            <button class="bg-transparent border border-white/50 hover:border-yellow-500 hover:text-yellow-500 text-white px-8 py-3 text-[10px] uppercase tracking-widest font-bold transition-all">
+                Client Portal
+            </button>
+        </div>
+    </header>
+
+    <section id="home" class="hero-wrapper flex flex-col justify-center items-center text-center px-4">
+        <div class="hero-bg-container">
+            <div class="hero-bg"></div>
+        </div>
+        
+        <!-- Interactive 3D Parallax Elements -->
+        <div class="parallax-element parallax-1" data-value="4"></div>
+        <div class="parallax-element parallax-2" data-value="-6"></div>
+        <div class="parallax-element parallax-3" data-value="8"></div>
+        
+        <div class="relative z-10 flex flex-col items-center mt-12 reveal-3d active">
+            <p class="text-yellow-500 uppercase tracking-[0.4em] text-xs font-semibold mb-6 drop-shadow-md">A Legacy of Excellence</p>
+            <h1 class="text-6xl md:text-8xl text-white serif-font font-light mb-8 max-w-5xl leading-tight drop-shadow-2xl">
+                The Art of <br> <span class="italic text-yellow-400">Mindful Travel.</span>
+            </h1>
+        </div>
+
+        <div class="absolute bottom-12 w-full max-w-[70rem] px-4 z-[100] reveal-3d delay-200 active">
+            <div class="glass-panel rounded-[2rem] p-3 flex flex-col md:flex-row items-center justify-between gap-2 relative" data-tilt data-tilt-max="2" data-tilt-speed="1000" data-tilt-perspective="2000">
+                <div class="flex-1 w-full flex items-center px-6 py-4 rounded-2xl hover:bg-white/10 transition-colors duration-300 cursor-pointer relative group" style="transform: translateZ(30px);">
+                    <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center mr-4 group-hover:border-yellow-500 transition-colors">
+                        <i class="fa-solid fa-location-dot text-white text-xs"></i>
+                    </div>
+                    <div class="w-full text-left">
+                        <label class="block text-[9px] text-white/60 uppercase tracking-[0.2em] font-semibold mb-1">Destination</label>
+                        <select class="w-full bg-transparent text-white text-sm font-semibold focus:outline-none appearance-none cursor-pointer">
+                            <option class="text-black">Grand Ocean Sokhna</option>
+                            <option class="text-black">Stay Inn Pyramids</option>
+                            <option class="text-black">Stay Inn Cairo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="hidden md:block w-[1px] h-12 bg-white/10"></div>
+
+                <div class="flex-1 w-full flex items-center px-6 py-4 rounded-2xl hover:bg-white/10 transition-colors duration-300 cursor-pointer relative date-group" style="transform: translateZ(30px);">
+                    <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center mr-4 group-hover:border-yellow-500 transition-colors">
+                        <i class="fa-regular fa-calendar-check text-white text-xs"></i>
+                    </div>
+                    <div class="w-full text-left relative">
+                        <label class="block text-[9px] text-white/60 uppercase tracking-[0.2em] font-semibold mb-1">Check In</label>
+                        <div id="checkin-display" class="text-white text-sm font-semibold">Select Date</div>
+                    </div>
+                    
+                    <div class="custom-popup cursor-default" onclick="event.stopPropagation()">
+                        <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-4">
+                            <i class="fa-solid fa-chevron-left text-white/50 hover:text-white cursor-pointer text-xs" onclick="changeMonth('checkin', -1)"></i>
+                            <span id="checkin-month-label" class="text-white text-sm font-semibold">June 2026</span>
+                            <i class="fa-solid fa-chevron-right text-white/50 hover:text-white cursor-pointer text-xs" onclick="changeMonth('checkin', 1)"></i>
+                        </div>
+                        <div class="grid grid-cols-7 gap-2 text-center text-xs text-white/50 font-semibold mb-2">
+                            <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+                        </div>
+                        <div id="checkin-grid" class="grid grid-cols-7 gap-2 text-center text-sm text-white"></div>
+                    </div>
+                </div>
+
+                <div class="hidden md:block w-[1px] h-12 bg-white/10"></div>
+
+                <div class="flex-1 w-full flex items-center px-6 py-4 rounded-2xl hover:bg-white/10 transition-colors duration-300 cursor-pointer relative date-group" style="transform: translateZ(30px);">
+                    <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center mr-4 group-hover:border-yellow-500 transition-colors">
+                        <i class="fa-regular fa-calendar-xmark text-white text-xs"></i>
+                    </div>
+                    <div class="w-full text-left relative">
+                        <label class="block text-[9px] text-white/60 uppercase tracking-[0.2em] font-semibold mb-1">Check Out</label>
+                        <div id="checkout-display" class="text-white text-sm font-semibold">Select Date</div>
+                    </div>
+
+                    <div class="custom-popup cursor-default" onclick="event.stopPropagation()">
+                        <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-4">
+                            <i class="fa-solid fa-chevron-left text-white/50 hover:text-white cursor-pointer text-xs" onclick="changeMonth('checkout', -1)"></i>
+                            <span id="checkout-month-label" class="text-white text-sm font-semibold">June 2026</span>
+                            <i class="fa-solid fa-chevron-right text-white/50 hover:text-white cursor-pointer text-xs" onclick="changeMonth('checkout', 1)"></i>
+                        </div>
+                        <div class="grid grid-cols-7 gap-2 text-center text-xs text-white/50 font-semibold mb-2">
+                            <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+                        </div>
+                        <div id="checkout-grid" class="grid grid-cols-7 gap-2 text-center text-sm text-white"></div>
+                    </div>
+                </div>
+
+                <div class="flex-shrink-0 w-full md:w-auto p-2" style="transform: translateZ(40px);">
+                    <button class="w-full md:w-auto bg-yellow-600 text-white px-12 py-5 rounded-2xl uppercase text-[10px] tracking-[0.2em] font-bold transition-all duration-300 hover:bg-yellow-500 hover:shadow-[0_0_30px_rgba(202,138,4,0.6)]">
+                        Find Rooms
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-32 px-8 max-w-7xl mx-auto mt-12">
+        <div class="flex flex-col lg:flex-row gap-16 items-center">
+            <div class="lg:w-1/2 relative reveal-3d">
+                <div class="absolute -top-10 -left-10 w-40 h-40 bg-yellow-100 rounded-full opacity-50 blur-3xl"></div>
+                <h2 class="serif-font text-5xl md:text-6xl leading-tight mb-8 text-gray-900 relative z-10">
+                    Hospitality is an <br><span class="italic text-yellow-600">Intuitive Craft.</span>
+                </h2>
+                <p class="text-gray-500 font-light leading-relaxed mb-10 text-lg relative z-10">
+                    At Grand Oceans, every space we design is a sanctuary meant to connect you with your surroundings. We blend innovative architecture with Egypt's rich cultural heritage to create experiences that resonate long after departure.
+                </p>
+                <a href="about.html" class="inline-flex items-center text-xs uppercase tracking-widest font-semibold border border-gray-900 px-8 py-4 hover:bg-gray-900 hover:text-white transition-all">
+                    Discover Our Story
+                </a>
+            </div>
+            <div class="lg:w-1/2 relative h-[600px] w-full tilt-wrapper reveal-3d delay-200" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-perspective="1000">
+                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" alt="Resort" class="w-[80%] h-[80%] object-cover absolute top-0 right-0 rounded-sm shadow-2xl tilt-image">
+                <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80" alt="Detail" class="w-[50%] h-[50%] object-cover absolute bottom-0 left-0 border-[10px] border-[#FAFAFA] shadow-xl tilt-image" style="transform: translateZ(80px);">
+            </div>
+        </div>
+    </section>
+
+    <section id="brands" class="py-20 px-8 max-w-7xl mx-auto border-t border-gray-200 mt-10">
+        <div class="text-center mb-24 reveal-3d">
+            <p class="text-yellow-600 uppercase tracking-[0.3em] text-[10px] font-semibold mb-4">Discover</p>
+            <h2 class="serif-font text-4xl text-gray-900 mb-4">Our Portfolio</h2>
+            <div class="w-12 h-0.5 bg-yellow-600 mx-auto"></div>
+        </div>
+        
+        <div class="flex flex-col md:flex-row items-center gap-12 md:gap-24 mb-40">
+            <div class="md:w-1/2 overflow-hidden rounded-sm shadow-2xl relative tilt-wrapper reveal-3d" data-tilt data-tilt-max="3" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                <a href="sokhna.html">
+                    <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1000&q=80" alt="Grand Ocean Sokhna" class="w-full h-[550px] object-cover">
+                </a>
+            </div>
+            <div class="md:w-1/2 flex flex-col items-start reveal-3d delay-200">
+                <p class="text-yellow-600 uppercase tracking-[0.3em] text-[10px] font-semibold mb-4 flex items-center">
+                    <span class="w-8 h-[1px] bg-yellow-600 mr-3"></span> The Coastal Collection
+                </p>
+                <h3 class="serif-font text-5xl text-gray-900 mb-6">Grand Ocean Sokhna</h3>
+                <p class="text-gray-500 font-light leading-relaxed mb-10 text-lg">
+                    Our flagship coastal retreat. A masterclass in seaside luxury where the arid beauty of the mountains meets the crystal-clear waters of the Red Sea. Unparalleled wellness and dining await.
+                </p>
+                <a href="sokhna.html" class="bg-gray-900 text-white px-10 py-4 text-xs uppercase tracking-widest font-semibold hover:bg-yellow-600 transition-all duration-300 shadow-lg">
+                    Explore Resort
+                </a>
+            </div>
+        </div>
+        
+        <div class="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-24">
+            <div class="md:w-1/2 overflow-hidden rounded-sm shadow-2xl relative tilt-wrapper reveal-3d" data-tilt data-tilt-max="3" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                <img src="https://images.unsplash.com/photo-1539667468225-eebb663053e6?auto=format&fit=crop&w=1000&q=80" alt="Stay Inn Hotels" class="w-full h-[550px] object-cover">
+            </div>
+            <div class="md:w-1/2 flex flex-col items-start md:items-end md:text-right reveal-3d delay-200">
+                <p class="text-yellow-600 uppercase tracking-[0.3em] text-[10px] font-semibold mb-4 flex items-center md:flex-row-reverse">
+                    <span class="w-8 h-[1px] bg-yellow-600 ml-0 md:ml-3 mr-3 md:mr-0"></span> The Urban Collection
+                </p>
+                <h3 class="serif-font text-5xl text-gray-900 mb-6">Stay Inn Hotels</h3>
+                <p class="text-gray-500 font-light leading-relaxed mb-10 md:ml-auto max-w-md text-lg">
+                    Boutique urban sanctuaries designed for cultural explorers and modern nomads. Whether you are awakening to the ancient wonder of the Pyramids or feeling the pulse of downtown Cairo.
+                </p>
+                <div class="flex w-full md:justify-end">
+                    <a href="stayinn.html" class="border border-gray-900 text-gray-900 px-10 py-4 text-xs uppercase tracking-widest font-semibold hover:bg-gray-900 hover:text-white transition-all duration-300 text-center">
+                        Explore Stay Inn
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dining" class="py-32 px-8 max-w-7xl mx-auto border-t border-gray-200 mt-20">
+        <div class="flex flex-col lg:flex-row items-center gap-16">
+            <div class="lg:w-1/3 reveal-3d">
+                <p class="text-yellow-600 uppercase tracking-[0.3em] text-[10px] font-semibold mb-4">Gastronomy</p>
+                <h2 class="serif-font text-4xl md:text-5xl text-gray-900 mb-6 leading-tight">Taste the <br>Extraordinary</h2>
+                <div class="w-12 h-0.5 bg-yellow-600 mb-6"></div>
+                <p class="text-gray-500 font-light leading-relaxed mb-8 text-lg">
+                    From fresh Red Sea catches to authentic Italian and Mediterranean fusion, our diverse portfolio of restaurants and lounges redefines the culinary landscape of Egypt.
+                </p>
+                <a href="dining.html" class="inline-block border-b border-black pb-1 text-xs uppercase tracking-widest font-semibold hover:text-yellow-600 hover:border-yellow-600 transition-colors">
+                    View Dining Directory <i class="fa-solid fa-arrow-right ml-2 text-[10px]"></i>
+                </a>
+            </div>
+            <div class="lg:w-2/3 relative h-[600px] w-full tilt-wrapper reveal-3d delay-200" data-tilt data-tilt-max="5" data-tilt-speed="400">
+                <div class="absolute top-0 right-0 w-3/4 h-[500px] shadow-2xl z-10 rounded-sm overflow-hidden tilt-image">
+                    <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=1000&q=80" alt="Fine Dining" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute -bottom-10 left-0 w-1/2 h-[400px] border-[12px] border-[#FAFAFA] shadow-2xl z-20 rounded-sm overflow-hidden tilt-image" style="transform: translateZ(90px);">
+                    <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80" alt="Lounge" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="news" class="py-32 px-4 md:px-8 max-w-[90rem] mx-auto bg-white border-t border-gray-200 mt-20">
+        <div class="flex justify-between items-end mb-16 border-b border-gray-100 pb-6 reveal-3d">
+            <h2 class="serif-font text-4xl text-gray-900">Latest Journal</h2>
+            <a href="news.html" class="text-xs uppercase tracking-widest font-semibold border-b border-gray-900 pb-1 hover:text-yellow-600 hover:border-yellow-600 transition-colors">View All Press</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 h-auto md:h-[600px]">
+            <a href="news.html" class="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-sm cursor-pointer shadow-lg reveal-3d" data-tilt data-tilt-max="2" data-tilt-glare="true" data-tilt-max-glare="0.3">
+                <img src="https://images.unsplash.com/photo-1560624052-449f5ddf0c31?auto=format&fit=crop&w=1000&q=80" alt="News Image" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-10 left-10 right-10 text-white" style="transform: translateZ(50px);">
+                    <p class="text-[10px] text-yellow-500 uppercase tracking-[0.2em] font-bold mb-3">Featured • Press Release</p>
+                    <h3 class="serif-font text-3xl md:text-4xl mb-4 leading-tight">Grand Ocean Sokhna Awarded 5 Stars After Grand Renovation</h3>
+                    <p class="text-white/80 font-light text-sm line-clamp-2">The international tourism board has officially upgraded our flagship property to 5-star status following extensive architectural and wellness facility upgrades.</p>
+                </div>
+            </a>
+            <a href="news.html" class="md:col-span-2 relative group overflow-hidden rounded-sm cursor-pointer shadow-md reveal-3d delay-100" data-tilt data-tilt-max="3" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=800&q=80" alt="News Image" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <div class="absolute bottom-6 left-8 right-8 text-white" style="transform: translateZ(30px);">
+                    <p class="text-[10px] text-yellow-500 uppercase tracking-[0.2em] font-bold mb-2">Culinary</p>
+                    <h3 class="serif-font text-2xl mb-2">New Michelin Chef Joins Stay Inn</h3>
+                </div>
+            </a>
+            <a href="news.html" class="md:col-span-2 relative group overflow-hidden rounded-sm cursor-pointer shadow-md bg-gray-100 flex flex-col justify-center p-10 reveal-3d delay-200" data-tilt data-tilt-max="3">
+                <div style="transform: translateZ(40px);">
+                    <p class="text-[10px] text-yellow-600 uppercase tracking-[0.2em] font-bold mb-4">Corporate Initiative</p>
+                    <h3 class="serif-font text-3xl text-gray-900 mb-4 leading-tight">Sustainability Launch 2026</h3>
+                    <p class="text-gray-500 font-light text-sm line-clamp-3 mb-6">Grand Oceans Hospitality commits to eliminating all single-use plastics across all properties by 2027 as part of our green earth campaign.</p>
+                    <span class="inline-block text-xs uppercase tracking-widest font-semibold text-gray-900 border-b border-gray-900 pb-1 w-max hover:text-yellow-600 transition-colors">Read Full Article</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <section id="careers" class="bg-zinc-950 text-white py-32 px-8 text-center relative overflow-hidden mt-20 reveal-3d">
+        <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1542314831-c6a4d27160c9?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center" style="transform: translateZ(-50px);"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-transparent"></div>
+        <div class="max-w-3xl mx-auto relative z-10" style="transform: translateZ(50px);">
+            <h2 class="serif-font text-5xl md:text-6xl mb-6">Join Our Vision</h2>
+            <div class="w-12 h-0.5 bg-yellow-600 mx-auto mb-8"></div>
+            <p class="text-zinc-300 font-light leading-relaxed mb-12 text-lg">
+                We are always looking for passionate individuals who understand the art of mindful hospitality. Explore career opportunities or get in touch with our corporate team.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-6">
+                <a href="careers.html" class="bg-yellow-600 text-white hover:bg-yellow-500 px-10 py-5 text-[10px] uppercase tracking-[0.2em] font-bold transition-all shadow-[0_0_20px_rgba(202,138,4,0.3)]">
+                    View Careers
+                </a>
+                <a href="#contact" class="border border-white/30 hover:bg-white hover:text-black hover:border-white px-10 py-5 text-[10px] uppercase tracking-[0.2em] font-bold transition-all backdrop-blur-sm">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-32 px-8 max-w-7xl mx-auto border-t border-gray-200">
+        <div class="flex flex-col lg:flex-row gap-16 items-center">
+            <div class="lg:w-1/2 reveal-3d">
+                <p class="text-yellow-600 uppercase tracking-[0.3em] text-[10px] font-semibold mb-4">Get In Touch</p>
+                <h2 class="serif-font text-4xl md:text-5xl text-gray-900 mb-6 leading-tight">Contact <br>Corporate</h2>
+                <div class="w-12 h-0.5 bg-yellow-600 mb-8"></div>
+                
+                <div class="space-y-8 text-gray-600 font-light mb-8 text-lg">
+                    <p class="flex items-start">
+                        <i class="fa-solid fa-location-dot text-yellow-600 w-6 text-xl mr-4 mt-1"></i>
+                        <span>38HG+8PV, Al Golf, Nasr City<br>Cairo Governorate 4451301</span>
+                    </p>
+                    <p class="flex items-center">
+                        <i class="fa-solid fa-envelope text-yellow-600 w-6 text-xl mr-4"></i>
+                        corporate@grandoceans.com
+                    </p>
+                    <p class="flex items-center">
+                        <i class="fa-solid fa-phone text-yellow-600 w-6 text-xl mr-4"></i>
+                        02 24144441
+                    </p>
+                    
+                    <div class="relative group inline-block cursor-pointer">
+                        <p class="flex items-center hover:text-yellow-600 transition-colors">
+                            <i class="fa-solid fa-clock text-yellow-600 w-6 text-xl mr-4"></i>
+                            View Opening Hours
+                        </p>
+                        <div class="absolute left-0 top-full mt-4 w-64 bg-zinc-950/95 backdrop-blur-md border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 rounded-lg shadow-2xl p-6 text-sm text-white">
+                            <h4 class="text-yellow-500 uppercase tracking-widest text-[10px] font-bold mb-4 border-b border-white/10 pb-2">Corporate Hours</h4>
+                            <ul class="space-y-3 font-light">
+                                <li class="flex justify-between"><span>Sun - Thu</span> <span>09:00 - 17:00</span></li>
+                                <li class="flex justify-between"><span>Saturday</span> <span>10:00 - 14:00</span></li>
+                                <li class="flex justify-between text-yellow-600"><span>Friday</span> <span>Closed</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:w-1/2 w-full h-[450px] shadow-2xl rounded-sm overflow-hidden border-[10px] border-[#FAFAFA] reveal-3d delay-200" data-tilt data-tilt-max="2">
+                <iframe class="w-full h-full" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=38HG%2B8PV,%20Al%20Golf,%20Nasr%20City,%20Cairo%20Governorate%204451301&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-zinc-950 text-white pt-20 pb-10 px-8 border-t border-white/10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-white/10 pb-16">
+            <div class="md:col-span-1">
+                <div class="serif-font text-2xl tracking-widest uppercase mb-6">
+                    Grand Oceans
+                    <span class="block text-[10px] font-sans tracking-[0.3em] text-yellow-500 mt-2">Hospitality</span>
+                </div>
+                <p class="text-zinc-400 text-sm font-light leading-relaxed">
+                    Setting the benchmark for premium hospitality and memorable guest experiences across Egypt.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Our Brands</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li><a href="sokhna.html" class="hover:text-yellow-500 transition">Grand Ocean Sokhna</a></li>
+                    <li><a href="stayinn.html" class="hover:text-yellow-500 transition">Stay Inn Hotels</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Corporate</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li><a href="#about" class="hover:text-yellow-500 transition">About Us</a></li>
+                    <li><a href="#careers" class="hover:text-yellow-500 transition">Careers</a></li>
+                    <li><a href="#news" class="hover:text-yellow-500 transition">Press & News</a></li>
+                    <li><a href="#contact" class="hover:text-yellow-500 transition">Contact Directory</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Headquarters</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li>Cairo, Egypt</li>
+                    <li>corporate@grandoceans.com</li>
+                    <li>02 24144441</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-8 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-widest text-zinc-500 font-light">
+            <p>&copy; 2026 Grand Oceans Hospitality Group. All rights reserved.</p>
+            <div class="space-x-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Calendar Logic
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let checkinDate = new Date();
+        let checkoutDate = new Date();
+
+        function renderCalendar(type, dateObj) {
+            const year = dateObj.getFullYear();
+            const month = dateObj.getMonth();
+            document.getElementById(`${type}-month-label`).innerText = `${monthNames[month]} ${year}`;
+            
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            let html = '';
+            for(let i = 0; i < firstDayIndex; i++) {
+                html += `<div class="py-1 opacity-20">-</div>`;
+            }
+            for(let day = 1; day <= daysInMonth; day++) {
+                html += `<div class="py-1 hover:bg-yellow-600 rounded-md cursor-pointer transition" onclick="selectDate('${type}', ${day}, ${month}, ${year})">${day}</div>`;
+            }
+            document.getElementById(`${type}-grid`).innerHTML = html;
+        }
+
+        function changeMonth(type, delta) {
+            if (type === 'checkin') {
+                checkinDate.setMonth(checkinDate.getMonth() + delta);
+                renderCalendar('checkin', checkinDate);
+            } else {
+                checkoutDate.setMonth(checkoutDate.getMonth() + delta);
+                renderCalendar('checkout', checkoutDate);
+            }
+        }
+
+        function selectDate(type, day, month, year) {
+            const formattedDate = `${day} ${monthNames[month].substring(0, 3)} ${year}`;
+            document.getElementById(`${type}-display`).innerText = formattedDate;
+        }
+
+        renderCalendar('checkin', checkinDate);
+        renderCalendar('checkout', checkoutDate);
+
+        // 3D Parallax Mouse Tracking for Hero Section
+        document.addEventListener("mousemove", parallax);
+        function parallax(e) {
+            document.querySelectorAll(".parallax-element").forEach(function(move){
+                var moving_value = move.getAttribute("data-value");
+                var x = (e.clientX * moving_value) / 250;
+                var y = (e.clientY * moving_value) / 250;
+                move.style.transform = "translateX(" + x + "px) translateY(" + y + "px)";
+            });
+        }
+
+        // Intersection Observer for 3D Scroll Reveal
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-3d').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal & Press | Grand Oceans Hospitality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" integrity="sha512-RX/OFugIG/bvlqwqT/1z4hVf4y/w5xsh2yHDiP25A11e2E2kwe2O//j8//y+rRz3OQk1Zc6+cRzQO7gBfRjS4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FAFAFA; overflow-x: hidden; color: #111; }
+        h1, h2, h3, h4, .serif-font { font-family: 'Playfair Display', serif; }
+        
+        /* Navigation Hover Effect */
+        .nav-link { position: relative; display: inline-block; padding-bottom: 4px; }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 1px; bottom: 0; left: 0;
+            background-color: #ca8a04; transition: width 0.3s ease-in-out;
+        }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link.active-nav::after { width: 100%; }
+
+        .header-scrolled { background: rgba(10, 10, 10, 0.95) !important; box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding-top: 1rem !important; padding-bottom: 1rem !important; }
+
+        /* Modern Newspaper Layout Elements */
+        .editorial-border-r { border-right: 1px solid #e5e5e5; }
+        .editorial-border-b { border-bottom: 1px solid #e5e5e5; }
+        .editorial-border-t { border-top: 1px solid #111; }
+        
+        /* Heavy Newspaper Borders */
+        .masthead-border { border-top: 4px solid #111; border-bottom: 1px solid #111; }
+        
+        /* Drop Cap for Lead Article & Modal */
+        .drop-cap::first-letter {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            line-height: 0.8;
+            float: left;
+            margin-right: 0.15em;
+            margin-bottom: -0.1em;
+            color: #ca8a04;
+            font-weight: bold;
+        }
+
+        /* 3D Scroll Reveal Animation */
+        .reveal-3d { opacity: 0; transform: translateY(40px) rotateX(-5deg); transition: all 1s cubic-bezier(0.25, 1, 0.2, 1); }
+        .reveal-3d.active { opacity: 1; transform: translateY(0) rotateX(0deg); }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+
+        /* Image Hover Effect */
+        .image-wrapper { overflow: hidden; }
+        .image-wrapper img { transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .image-wrapper:hover img { transform: scale(1.05); }
+
+        /* Custom Hover Line for Article Links */
+        .article-link { transition: color 0.3s; cursor: pointer; }
+        .article-link:hover { color: #ca8a04; }
+
+        /* Article Modal Animation States */
+        #article-modal.show { opacity: 1; pointer-events: auto; }
+        #article-modal.show .modal-body { transform: scale(1) translateY(0); }
+        
+        /* Custom scrollbar for the modal reading experience */
+        .modal-body::-webkit-scrollbar { width: 6px; }
+        .modal-body::-webkit-scrollbar-track { background: #f1f1f1; }
+        .modal-body::-webkit-scrollbar-thumb { background: #ca8a04; }
+
+        /* Postal Themed Subscription Modal Animation States */
+        #subscribe-modal.show { opacity: 1; pointer-events: auto; }
+        #subscribe-modal.show .modal-body { transform: scale(1) translateY(0); }
+        
+        .airmail-border {
+            border: 6px solid transparent;
+            border-image: repeating-linear-gradient(-45deg, #111 0, #111 10px, transparent 10px, transparent 20px, #ca8a04 20px, #ca8a04 30px, transparent 30px, transparent 40px) 10;
+        }
+
+        .fly-away {
+            transform: translate(250px, -250px) rotate(35deg) scale(0);
+            opacity: 0;
+        }
+
+        .stamp-down {
+            animation: stampDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes stampDown {
+            0% { transform: scale(3) rotate(-25deg); opacity: 0; }
+            100% { transform: scale(1) rotate(-12deg); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- HEADER -->
+    <header id="main-header" class="fixed top-0 w-full z-50 py-6 px-8 flex justify-between items-center text-white bg-black/90 backdrop-blur-md border-b border-white/10 transition-all duration-500">
+        <a href="hospitality.html" class="serif-font text-2xl tracking-widest uppercase cursor-pointer flex flex-col hover:opacity-80 transition-opacity">
+            Grand Oceans
+            <span class="font-sans text-[9px] tracking-[0.4em] opacity-80 text-yellow-500 mt-1">Hospitality Group</span>
+        </a>
+        <nav class="hidden lg:flex space-x-8 text-[11px] font-semibold uppercase tracking-[0.2em] items-center">
+            <a href="hospitality.html" class="nav-link hover:text-yellow-300 transition-colors duration-300">Home</a>
+            <a href="about.html" class="nav-link hover:text-yellow-300 transition-colors duration-300">About</a>
+            <div class="relative group py-4">
+                <span class="nav-link hover:text-yellow-300 transition-colors duration-300 flex items-center cursor-pointer">
+                    Our Hotels <i class="fa-solid fa-chevron-down ml-2 text-[8px]"></i>
+                </span>
+                <div class="absolute left-0 top-full w-56 bg-zinc-950/95 backdrop-blur-md border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 rounded-sm shadow-2xl">
+                    <a href="sokhna.html" class="block px-5 py-4 text-[10px] text-white/80 hover:text-yellow-400 hover:bg-white/5 border-b border-white/10 transition-colors">Grand Ocean Sokhna</a>
+                    <a href="stayinn.html" class="block px-5 py-4 text-[10px] text-white/80 hover:text-yellow-400 hover:bg-white/5 transition-colors">Stay Inn Hotels</a>
+                </div>
+            </div>
+            <a href="dining.html" class="nav-link hover:text-yellow-300 transition-colors duration-300">Dining</a>
+            <a href="news.html" class="nav-link active-nav text-yellow-400 transition-colors duration-300">News</a>
+            <a href="contact.html" class="nav-link hover:text-yellow-300 transition-colors duration-300">Contact Us</a>
+        </nav>
+        <div>
+            <a href="contact.html" class="bg-transparent border border-white/50 hover:border-yellow-500 hover:text-yellow-500 text-white px-8 py-3 text-[10px] uppercase tracking-widest font-bold transition-all">Client Portal</a>
+        </div>
+    </header>
+
+    <!-- NEWSPAPER CONTENT CONTAINER -->
+    <main class="pt-32 px-4 md:px-8 max-w-[90rem] mx-auto pb-32">
+        
+        <!-- MASTHEAD -->
+        <div class="text-center mt-12 mb-8 reveal-3d">
+            <h1 class="serif-font text-6xl md:text-8xl lg:text-[8rem] font-bold tracking-tight text-gray-900 uppercase">The Journal</h1>
+            
+            <!-- LIVE DATE AND TIME ELEMENTS INTEGRATED HERE -->
+            <div class="masthead-border py-3 mt-6 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">
+                <span id="live-issue">Vol. IV — Issue No. 26</span>
+                <span class="my-2 md:my-0 text-black tracking-[0.1em] flex gap-2 items-center">
+                    <i class="fa-regular fa-clock text-yellow-600"></i>
+                    <span id="live-date-time">Loading Live Feed...</span>
+                </span>
+                <span>Corporate Press & Editorials</span>
+            </div>
+        </div>
+
+        <!-- MAIN EDITORIAL GRID -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 editorial-border-b pb-16">
+            
+            <!-- Lead Story (Spans 8 columns) -->
+            <article class="lg:col-span-8 lg:editorial-border-r lg:pr-8 reveal-3d">
+                <div class="mb-4 flex items-center gap-3">
+                    <span class="bg-yellow-600 text-white px-3 py-1 text-[9px] uppercase tracking-widest font-bold">Headline</span>
+                    <span class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Corporate News</span>
+                </div>
+                
+                <a onclick="openArticleModal(event)" class="block group">
+                    <h2 class="serif-font text-5xl md:text-7xl font-bold leading-[1.05] mb-6 text-gray-900 article-link">Grand Ocean Sokhna Awarded 5-Star Status Following Multi-Million Dollar Renovation.</h2>
+                    
+                    <div class="image-wrapper mb-6 w-full h-[500px]" data-tilt data-tilt-max="1" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80" alt="Resort Renovation" class="w-full h-full object-cover">
+                    </div>
+                </a>
+
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/3">
+                        <p class="text-xs font-bold uppercase tracking-widest text-gray-900 mb-1">By Executive Board</p>
+                        <p class="text-xs text-gray-500 mb-4">Reading time: 4 mins</p>
+                    </div>
+                    <div class="md:w-2/3">
+                        <p class="drop-cap text-lg text-gray-700 leading-relaxed font-light mb-4">
+                            The international tourism board has officially elevated Grand Ocean Sokhna to a five-star rating, marking a historic milestone for the coastal flagship. This recognition follows a comprehensive two-year transformation that modernized the architectural footprint while honoring the site's natural Red Sea topography.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed font-light mb-6">
+                            "Our goal was never just to update the furnishings," stated the CEO. "We completely reimagined the spatial flow to create invisible luxury—an intuitive environment where wellness, sustainability, and high-end gastronomy converge perfectly."
+                        </p>
+                        <a onclick="openArticleModal(event)" class="cursor-pointer text-xs uppercase tracking-[0.2em] font-bold border-b border-black pb-1 hover:text-yellow-600 hover:border-yellow-600 transition-colors">Read Full Story</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Sidebar "In Brief" Stories (Spans 4 columns) -->
+            <aside class="lg:col-span-4 flex flex-col justify-between reveal-3d delay-100">
+                <div class="mb-4">
+                    <span class="text-[10px] uppercase tracking-widest text-yellow-600 font-bold">Trending</span>
+                </div>
+
+                <!-- Sidebar Article 1 -->
+                <article class="mb-8 editorial-border-b pb-8">
+                    <a href="#" class="block group">
+                        <h3 class="serif-font text-3xl font-bold mb-4 text-gray-900 leading-tight article-link">Michelin-Starred Chef Alessandro Vittori Takes the Helm at Il Mulino</h3>
+                        <div class="image-wrapper mb-4 h-48">
+                            <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=600&q=80" alt="Chef Cooking" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                        </div>
+                        <p class="text-gray-600 text-sm font-light leading-relaxed">
+                            Stay Inn Cairo's premier Italian venue secures one of Europe's most sought-after culinary minds to redesign the seasonal tasting menu.
+                        </p>
+                    </a>
+                </article>
+
+                <!-- Sidebar Article 2 -->
+                <article class="mb-8 editorial-border-b pb-8">
+                    <a href="#" class="block group">
+                        <h3 class="serif-font text-2xl font-bold mb-3 text-gray-900 leading-tight article-link">The 2026 Sustainability Mandate</h3>
+                        <div class="image-wrapper mb-4 h-32">
+                            <img src="https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?auto=format&fit=crop&w=600&q=80" alt="Sustainability" class="w-full h-full object-cover">
+                        </div>
+                        <p class="text-gray-600 text-sm font-light leading-relaxed mb-3">
+                            Grand Oceans Hospitality pledges to eliminate 100% of single-use plastics across all properties by Q4 2027, launching solar initiatives at Sokhna.
+                        </p>
+                        <span class="text-[9px] uppercase tracking-widest font-bold text-gray-400">Environment</span>
+                    </a>
+                </article>
+
+                <!-- Sidebar Article 3 -->
+                <article>
+                    <a href="#" class="block group">
+                        <h3 class="serif-font text-2xl font-bold mb-3 text-gray-900 leading-tight article-link">Record Q1 Growth for Urban Collection</h3>
+                        <div class="image-wrapper mb-4 h-32">
+                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80" alt="Business Growth" class="w-full h-full object-cover">
+                        </div>
+                        <p class="text-gray-600 text-sm font-light leading-relaxed mb-3">
+                            Driven by the opening of the new Grand Egyptian Museum, Stay Inn Pyramids reports a 45% year-over-year increase in international bookings.
+                        </p>
+                        <span class="text-[9px] uppercase tracking-widest font-bold text-gray-400">Business</span>
+                    </a>
+                </article>
+            </aside>
+        </div>
+
+        <!-- SECONDARY GRID (3 Columns) -->
+        <div class="mb-8 reveal-3d">
+            <h4 class="text-xs uppercase tracking-[0.3em] font-bold text-black editorial-border-t pt-4 mb-8">More from the Portfolio</h4>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            
+            <!-- Grid Article 1 -->
+            <article class="md:editorial-border-r md:pr-8 reveal-3d">
+                <a href="#" class="block group">
+                    <div class="image-wrapper mb-5 h-64">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" alt="Architecture" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-[9px] uppercase tracking-widest font-bold text-yellow-600 mb-2 block">Design</span>
+                    <h3 class="serif-font text-3xl font-bold mb-3 text-gray-900 leading-tight article-link">Minimalism Meets Antiquity</h3>
+                    <p class="text-gray-600 text-sm font-light leading-relaxed">
+                        An exclusive interview with the lead architect behind the Stay Inn brand on blending stark modern lines with Cairo's rich historical texture.
+                    </p>
+                </a>
+            </article>
+
+            <!-- Grid Article 2 -->
+            <article class="md:editorial-border-r md:pr-8 reveal-3d delay-100">
+                <a href="#" class="block group">
+                    <div class="image-wrapper mb-5 h-64">
+                        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80" alt="Lounge" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-[9px] uppercase tracking-widest font-bold text-yellow-600 mb-2 block">Lifestyle</span>
+                    <h3 class="serif-font text-3xl font-bold mb-3 text-gray-900 leading-tight article-link">Unveiling The Horizon Lounge</h3>
+                    <p class="text-gray-600 text-sm font-light leading-relaxed">
+                        A new perspective on the Great Pyramids. Discover the bespoke cocktail menu and tapas pairings at our newly opened rooftop venue.
+                    </p>
+                </a>
+            </article>
+
+            <!-- Grid Article 3 -->
+            <article class="reveal-3d delay-200">
+                <a href="#" class="block group">
+                    <div class="image-wrapper mb-5 h-64">
+                        <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=80" alt="Resort Room" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-[9px] uppercase tracking-widest font-bold text-yellow-600 mb-2 block">Awards</span>
+                    <h3 class="serif-font text-3xl font-bold mb-3 text-gray-900 leading-tight article-link">Best Coastal Retreat 2026</h3>
+                    <p class="text-gray-600 text-sm font-light leading-relaxed">
+                        Grand Ocean Sokhna dominates the regional hospitality awards, taking home the top prize for luxury accommodations and guest experience.
+                    </p>
+                </a>
+            </article>
+        </div>
+
+        <!-- NEWSLETTER SIGNUP / EDITORIAL FOOTER -->
+        <div class="bg-gray-100 p-12 text-center reveal-3d">
+            <i class="fa-regular fa-envelope text-3xl mb-4 text-gray-400"></i>
+            <h3 class="serif-font text-4xl font-bold mb-4">The Executive Briefing</h3>
+            <p class="text-gray-600 font-light mb-8 max-w-md mx-auto">Subscribe to receive exclusive press releases, seasonal dining menus, and corporate updates directly to your inbox.</p>
+            <!-- Form triggering custom postal animation -->
+            <form class="flex max-w-md mx-auto" onsubmit="event.preventDefault(); openSubscribeModal(); this.reset();">
+                <input type="email" placeholder="Your email address" class="flex-1 bg-white border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors" required>
+                <button type="submit" class="bg-black text-white px-8 py-3 text-[10px] uppercase tracking-widest font-bold hover:bg-yellow-600 transition-colors">Subscribe</button>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- MODERN NEWSPAPER ARTICLE MODAL (POP UP) -->
+    <div id="article-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-500">
+        <!-- Blur Background -->
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeArticleModal()"></div>
+        
+        <!-- Modal Content Container -->
+        <div class="relative bg-[#f9f9f7] w-full max-w-5xl max-h-[95vh] overflow-y-auto rounded-sm shadow-[0_30px_100px_rgba(0,0,0,0.8)] transform scale-95 translate-y-8 transition-all duration-700 modal-body">
+            
+            <!-- Sticky Close Button -->
+            <button onclick="closeArticleModal()" class="sticky top-6 float-right right-6 w-12 h-12 bg-black text-white rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors z-20 shadow-lg group">
+                <i class="fa-solid fa-xmark text-xl group-hover:scale-110 transition-transform"></i>
+            </button>
+            
+            <!-- Article Body -->
+            <div class="p-8 md:p-16 pt-16">
+                <!-- Header -->
+                <div class="text-center mb-12 border-b-2 border-black pb-10">
+                    <span class="text-[11px] uppercase tracking-[0.3em] text-yellow-600 font-bold mb-6 block">Corporate News Feature</span>
+                    <h2 class="serif-font text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8 text-gray-900 max-w-4xl mx-auto">Grand Ocean Sokhna Awarded 5-Star Status Following Renovation.</h2>
+                    <div class="flex justify-center items-center gap-4 text-xs uppercase tracking-widest text-gray-500 font-semibold">
+                        <span>New Cairo, Egypt</span>
+                        <span>•</span>
+                        <!-- Modal static timestamp matches the article filing data -->
+                        <span>June 11, 2026</span>
+                        <span>•</span>
+                        <span>By The Executive Board</span>
+                    </div>
+                </div>
+                
+                <!-- Hero Image -->
+                <div class="w-full h-[500px] mb-12 border border-gray-200 p-2 bg-white">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1500&q=80" alt="Resort Renovation" class="w-full h-full object-cover">
+                </div>
+                
+                <!-- Story Content -->
+                <div class="max-w-3xl mx-auto text-lg text-gray-800 font-light leading-[1.8]">
+                    <p class="drop-cap mb-6">The international tourism board has officially elevated Grand Ocean Sokhna to a five-star rating, marking a historic milestone for the coastal flagship. This recognition follows a comprehensive two-year transformation that modernized the architectural footprint while honoring the site's natural Red Sea topography.</p>
+                    
+                    <p class="mb-6">"Our goal was never just to update the furnishings," stated the CEO during the press briefing. "We completely reimagined the spatial flow to create invisible luxury—an intuitive environment where wellness, sustainability, and high-end gastronomy converge perfectly without ever feeling forced upon the guest."</p>
+                    
+                    <div class="my-12 py-8 border-t border-b border-gray-300 text-center">
+                        <i class="fa-solid fa-quote-left text-3xl text-yellow-500 mb-4 opacity-50"></i>
+                        <p class="serif-font text-3xl font-bold text-gray-900 leading-snug max-w-xl mx-auto">"We are proving that world-class luxury and environmental stewardship are not mutually exclusive."</p>
+                    </div>
+
+                    <h3 class="serif-font text-3xl font-bold mt-12 mb-6 text-gray-900">A Paradigm Shift in Coastal Luxury</h3>
+                    <p class="mb-6">The renovation touched every aspect of the resort. The 250 guest rooms were stripped to their studs and rebuilt with locally sourced Egyptian limestone, smart climate control systems, and panoramic floor-to-ceiling windows that erase the boundary between indoors and the azure waters outside.</p>
+                    <p class="mb-6">Moreover, the wellness center was expanded into a 3,000-square-meter sanctuary featuring thalassotherapy pools, salt rooms, and holistic treatment pavilions inspired by ancient Egyptian healing practices. The culinary program was similarly overhauled, introducing two new signature dining venues focused on zero-kilometer seafood sourcing.</p>
+                    
+                    <h3 class="serif-font text-3xl font-bold mt-12 mb-6 text-gray-900">Sustainable Operations at the Forefront</h3>
+                    <p class="mb-6">Earning the 5-star designation wasn't solely about aesthetics or expanded menus. The international tourism board heavily highlighted Grand Ocean Sokhna's newly implemented green infrastructure as a deciding factor.</p>
+                    <p class="mb-10">A massive solar array installed above the covered parking and utility buildings now powers 40% of the resort's energy needs. Furthermore, a state-of-the-art desalination plant ensures responsible water usage without drawing from local community resources, and the property has completely eliminated single-use plastics from its guest-facing operations.</p>
+                    
+                    <div class="bg-gray-100 p-8 border-l-4 border-yellow-600 text-sm">
+                        <p class="font-bold text-gray-900 uppercase tracking-widest mb-2 text-xs">Press Contact</p>
+                        <p>For high-resolution images, interview requests, or further inquiries regarding the renovation, please contact the Grand Oceans Media Relations office at <span class="font-bold">press@grandoceans.com</span> or dial <span class="font-bold">02 24144441</span>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POSTAL THEMED SUBSCRIPTION MODAL -->
+    <div id="subscribe-modal" class="fixed inset-0 z-[200] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-500">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeSubscribeModal()"></div>
+        
+        <div class="relative bg-[#fdfbf7] w-[90%] max-w-md rounded-sm shadow-[0_30px_100px_rgba(0,0,0,0.8)] transform scale-95 translate-y-8 transition-all duration-700 modal-body airmail-border overflow-hidden">
+            <button onclick="closeSubscribeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-black transition-colors z-20">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            
+            <div class="p-10 text-center relative h-64 flex flex-col justify-center">
+                <!-- Flying Envelope Container -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div id="flying-envelope" class="text-6xl text-yellow-600 transition-all duration-1000 ease-in-out">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                    </div>
+                </div>
+                
+                <!-- Success Content (Starts Hidden) -->
+                <div id="subscribe-content" class="opacity-0 transition-opacity duration-500 absolute inset-0 flex flex-col items-center justify-center p-8 bg-[#fdfbf7] pointer-events-none">
+                    <div id="postal-stamp" class="w-20 h-20 mb-4 border-[3px] border-red-800 text-red-800 rounded-full flex items-center justify-center opacity-0">
+                        <div class="border border-red-800 rounded-full w-[4.5rem] h-[4.5rem] flex items-center justify-center">
+                            <span class="font-bold text-[10px] uppercase tracking-widest text-center leading-tight">Postage<br>Paid</span>
+                        </div>
+                    </div>
+                    <h3 class="serif-font text-3xl font-bold text-gray-900 mb-2">Dispatched.</h3>
+                    <p class="text-gray-600 font-light text-sm">You are now on the list. The Grand Oceans Journal will arrive in your inbox shortly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN FOOTER -->
+    <footer class="bg-zinc-950 text-white pt-20 pb-10 px-8 border-t border-white/10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-white/10 pb-16">
+            <div class="md:col-span-1">
+                <div class="serif-font text-2xl tracking-widest uppercase mb-6">
+                    Grand Oceans
+                    <span class="block text-[10px] font-sans tracking-[0.3em] text-yellow-500 mt-2">Hospitality</span>
+                </div>
+                <p class="text-zinc-400 text-sm font-light leading-relaxed">Setting the benchmark for premium hospitality and memorable guest experiences across Egypt.</p>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Our Brands</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li><a href="sokhna.html" class="hover:text-yellow-500 transition">Grand Ocean Sokhna</a></li>
+                    <li><a href="stayinn.html" class="hover:text-yellow-500 transition">Stay Inn Hotels</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Corporate</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li><a href="about.html" class="hover:text-yellow-500 transition">About Us</a></li>
+                    <li><a href="careers.html" class="hover:text-yellow-500 transition">Careers</a></li>
+                    <li><a href="contact.html" class="hover:text-yellow-500 transition">Contact Directory</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Headquarters</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li>Cairo, Egypt</li>
+                    <li>corporate@grandoceans.com</li>
+                    <li>02 24144441</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-8 flex justify-between items-center text-[10px] uppercase tracking-widest text-zinc-500 font-light">
+            <p>&copy; 2026 Grand Oceans Hospitality Group. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Navigation Scroll Effect ---
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // --- Intersection Observer for 3D Scroll Reveals ---
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.reveal-3d').forEach(el => observer.observe(el));
+
+        // --- Article Modal Logic ---
+        const articleModal = document.getElementById('article-modal');
+
+        function openArticleModal(e) {
+            e.preventDefault(); 
+            articleModal.classList.add('show');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeArticleModal() {
+            articleModal.classList.remove('show');
+            document.body.style.overflow = 'auto'; 
+        }
+
+        document.addEventListener('keydown', function(event){
+            if(event.key === "Escape"){
+                if(articleModal.classList.contains('show')) closeArticleModal();
+                if(document.getElementById('subscribe-modal').classList.contains('show')) closeSubscribeModal();
+            }
+        });
+
+        // --- Postal Subscription Modal Logic ---
+        const subscribeModal = document.getElementById('subscribe-modal');
+        const flyingEnvelope = document.getElementById('flying-envelope');
+        const subscribeContent = document.getElementById('subscribe-content');
+        const postalStamp = document.getElementById('postal-stamp');
+
+        function openSubscribeModal() {
+            // Reset Animation States
+            flyingEnvelope.classList.remove('fly-away');
+            subscribeContent.classList.remove('opacity-100');
+            subscribeContent.classList.add('opacity-0');
+            postalStamp.classList.remove('stamp-down');
+
+            // Open Modal
+            subscribeModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+
+            // Trigger Animation Chain
+            setTimeout(() => {
+                flyingEnvelope.classList.add('fly-away');
+                subscribeContent.classList.remove('opacity-0');
+                subscribeContent.classList.add('opacity-100');
+                
+                setTimeout(() => {
+                    postalStamp.classList.add('stamp-down');
+                }, 300);
+            }, 300);
+        }
+
+        function closeSubscribeModal() {
+            subscribeModal.classList.remove('show');
+            
+            // Only restore scroll if the article modal isn't also open
+            if(!document.getElementById('article-modal').classList.contains('show')){
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // --- NEW LIVE CLOCK AND DATE ENGINE ---
+        function updateNewspaperClock() {
+            const dateTimeTarget = document.getElementById('live-date-time');
+            if (!dateTimeTarget) return;
+
+            const now = new Date();
+
+            const dateOptions = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+
+            const formattedDate = now.toLocaleDateString('en-US', dateOptions);
+            const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
+
+            dateTimeTarget.innerText = `${formattedDate} • ${formattedTime}`;
+        }
+
+        updateNewspaperClock();
+        setInterval(updateNewspaperClock, 1000);
+    </script>
+</body>
+</html>

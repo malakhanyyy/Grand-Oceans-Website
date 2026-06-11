@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Grand Oceans Hospitality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <!-- Vanilla Tilt for 3D Interactive Hover -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" integrity="sha512-RX/OFugIG/bvlqwqT/1z4hVf4y/w5xsh2yHDiP25A11e2E2kwe2O//j8//y+rRz3OQk1Zc6+cRzQO7gBfRjS4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FAFAFA; overflow-x: hidden; perspective: 1000px; }
+        h1, h2, h3, .serif-font { font-family: 'Playfair Display', serif; }
+        
+        /* Cinematic Hero Animation & 3D Elements */
+        .hero-wrapper { position: relative; height: 70vh; z-index: 40; perspective: 1000px; transform-style: preserve-3d; }
+        .hero-bg-container { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        .hero-bg {
+            position: absolute; inset: -5%;
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+            animation: slowZoom 30s infinite alternate ease-in-out;
+            transform: translateZ(-100px) scale(1.2);
+        }
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* 3D Scroll Reveal Animation */
+        .reveal-3d {
+            opacity: 0;
+            transform: translateY(60px) rotateX(-15deg) scale(0.95);
+            transition: all 1.2s cubic-bezier(0.25, 1, 0.2, 1);
+            transform-origin: center bottom;
+        }
+        .reveal-3d.active {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg) scale(1);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* 3D Container for Image Wrappers */
+        .tilt-wrapper { transform-style: preserve-3d; transform: perspective(1000px); }
+        .tilt-image { transform: translateZ(50px); }
+        .tilt-text { transform: translateZ(40px); }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <!-- HEADER (Same as main page) -->
+    <header class="fixed top-0 w-full z-50 py-6 px-8 flex justify-between items-center text-white bg-gradient-to-b from-black/90 to-transparent backdrop-blur-sm border-b border-white/10 transition-all">
+        <a href="hospitality.html" class="serif-font text-2xl tracking-widest uppercase cursor-pointer flex flex-col hover:opacity-80 transition-opacity">
+            Grand Oceans
+            <span class="font-sans text-[9px] tracking-[0.4em] opacity-80 text-yellow-500 mt-1">Hospitality Group</span>
+        </a>
+        
+        <nav class="hidden lg:flex space-x-8 text-[11px] font-semibold uppercase tracking-[0.2em] items-center">
+            <a href="hospitality.html" class="hover:text-yellow-300 transition-colors duration-300">Home</a>
+            <a href="about.html" class="text-yellow-400 transition-colors duration-300">About</a>
+            <div class="relative group py-4">
+                <span class="hover:text-yellow-300 transition-colors duration-300 flex items-center cursor-pointer">
+                    Our Hotels <i class="fa-solid fa-chevron-down ml-2 text-[8px]"></i>
+                </span>
+                <div class="absolute left-0 top-full w-56 bg-zinc-950/95 backdrop-blur-md border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 rounded-sm shadow-2xl">
+                    <a href="sokhna.html" class="block px-5 py-4 text-[10px] text-white/80 hover:text-yellow-400 hover:bg-white/5 border-b border-white/10 transition-colors">Grand Ocean Sokhna</a>
+                    <a href="index.html#brands" class="block px-5 py-4 text-[10px] text-white/80 hover:text-yellow-400 hover:bg-white/5 transition-colors">Stay Inn Hotels</a>
+                </div>
+            </div>
+            <a href="dining.html" class="hover:text-yellow-300 transition-colors duration-300">Dining</a>
+            <a href="news.html" class="hover:text-yellow-300 transition-colors duration-300">News</a>
+            <a href="careers.html" class="hover:text-yellow-300 transition-colors duration-300">Careers</a>
+            <a href="contact_us.html" class="hover:text-yellow-300 transition-colors duration-300">Contact Us</a>
+        </nav>
+
+        <div>
+            <button class="bg-transparent border border-white/50 hover:border-yellow-500 hover:text-yellow-500 text-white px-8 py-3 text-[10px] uppercase tracking-widest font-bold transition-all">
+                Client Portal
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-wrapper flex flex-col justify-center items-center text-center px-4">
+        <div class="hero-bg-container">
+            <div class="hero-bg"></div>
+        </div>
+        
+        <div class="relative z-10 flex flex-col items-center mt-20 reveal-3d active">
+            <p class="text-yellow-500 uppercase tracking-[0.4em] text-xs font-semibold mb-6 drop-shadow-md">Our Story</p>
+            <h1 class="text-5xl md:text-7xl text-white serif-font font-light mb-8 max-w-4xl leading-tight drop-shadow-2xl">
+                Redefining the <br> <span class="italic text-yellow-400">Art of Hospitality.</span>
+            </h1>
+        </div>
+    </section>
+
+    <!-- THE VISION SECTION -->
+    <section class="py-32 px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col lg:flex-row gap-20 items-center">
+            <div class="lg:w-1/2 reveal-3d">
+                <p class="text-yellow-600 uppercase tracking-[0.3em] text-[10px] font-semibold mb-4">The Vision</p>
+                <h2 class="serif-font text-4xl md:text-5xl text-gray-900 mb-8 leading-tight">
+                    Beyond luxury, we craft <br><span class="italic text-gray-500">meaningful connections.</span>
+                </h2>
+                <div class="w-12 h-0.5 bg-yellow-600 mb-8"></div>
+                <div class="space-y-6 text-gray-500 font-light leading-relaxed text-lg">
+                    <p>
+                        Founded with a singular vision to elevate the Egyptian hospitality landscape, Grand Oceans Hospitality Group operates on a simple philosophy: true luxury is invisible. It is felt in the intuitive service, the mindful architecture, and the seamless integration of our properties with their surroundings.
+                    </p>
+                    <p>
+                        From the serene shores of Sokhna to the beating cultural heart of Cairo, our portfolio is purposefully diverse. Yet, every Grand Ocean and Stay Inn property shares a common DNA—a commitment to uncompromising quality, sustainable practices, and creating spaces where guests can truly disconnect to reconnect.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="lg:w-1/2 relative h-[700px] w-full tilt-wrapper reveal-3d delay-200" data-tilt data-tilt-max="3" data-tilt-speed="400" data-tilt-perspective="1000">
+                <!-- Large abstract architectural image -->
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80" alt="Architecture" class="w-[75%] h-[85%] object-cover absolute top-0 left-0 rounded-sm shadow-2xl tilt-image">
+                <!-- Overlapping detail image -->
+                <img src="https://theluxeresident.com/wp-content/uploads/2025/06/luxury-hospitality-3.jpeg?w=735" alt="Detail" class="w-[55%] h-[45%] object-cover absolute bottom-0 right-0 border-[12px] border-[#FAFAFA] shadow-xl tilt-image" style="transform: translateZ(80px);">
+            </div>
+        </div>
+    </section>
+
+    <!-- CORE VALUES (3D Grid) -->
+    <section class="py-32 px-4 md:px-8 max-w-[90rem] mx-auto bg-white border-t border-gray-200">
+        <div class="text-center mb-20 reveal-3d">
+            <p class="text-yellow-600 uppercase tracking-[0.3em] text-[10px] font-semibold mb-4">Our DNA</p>
+            <h2 class="serif-font text-4xl text-gray-900 mb-4">Core Values</h2>
+            <div class="w-12 h-0.5 bg-yellow-600 mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Value 1 -->
+            <div class="relative h-[450px] group overflow-hidden rounded-sm shadow-lg tilt-wrapper reveal-3d" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.4">
+                <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80" alt="Sustainability" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                <div class="absolute bottom-10 left-10 right-10 text-white tilt-text">
+                    <span class="text-yellow-500 text-3xl mb-4 block"><i class="fa-solid fa-leaf"></i></span>
+                    <h3 class="serif-font text-2xl mb-3">Mindful Sustainability</h3>
+                    <p class="text-white/70 font-light text-sm">We are dedicated to preserving the environments we inhabit, implementing green technologies and eliminating single-use plastics.</p>
+                </div>
+            </div>
+
+            <!-- Value 2 -->
+            <div class="relative h-[450px] group overflow-hidden rounded-sm shadow-lg tilt-wrapper reveal-3d delay-100" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.4">
+                <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80" alt="Heritage" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                <div class="absolute bottom-10 left-10 right-10 text-white tilt-text">
+                    <span class="text-yellow-500 text-3xl mb-4 block"><i class="fa-solid fa-landmark"></i></span>
+                    <h3 class="serif-font text-2xl mb-3">Cultural Heritage</h3>
+                    <p class="text-white/70 font-light text-sm">Every property is a reflection of its locale. We integrate Egyptian artistry, materials, and culinary traditions into the guest experience.</p>
+                </div>
+            </div>
+
+            <!-- Value 3 -->
+            <div class="relative h-[450px] group overflow-hidden rounded-sm shadow-lg tilt-wrapper reveal-3d delay-200" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.4">
+                <img src="https://img.magnific.com/free-photo/concierge-assists-with-checkin-hotel_482257-90464.jpg?semt=ais_hybrid&w=740&q=80" alt="Innovation" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                <div class="absolute bottom-10 left-10 right-10 text-white tilt-text">
+                    <span class="text-yellow-500 text-3xl mb-4 block"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                    <h3 class="serif-font text-2xl mb-3">Intuitive Service</h3>
+                    <p class="text-white/70 font-light text-sm">We anticipate needs before they arise. Our staff is trained in the art of invisible luxury—present when needed, seamlessly out of the way when not.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LEADERSHIP / QUOTE -->
+    <section class="py-32 px-8 max-w-5xl mx-auto text-center reveal-3d">
+        <i class="fa-solid fa-quote-left text-4xl text-yellow-200 mb-8"></i>
+        <h2 class="serif-font text-3xl md:text-5xl text-gray-900 leading-relaxed mb-10">
+            "We do not simply build hotels; we curate environments where time slows down, allowing our guests to write their own stories."
+        </h2>
+        <div class="flex items-center justify-center space-x-4">
+            <div class="w-12 h-[1px] bg-gray-400"></div>
+            <p class="uppercase tracking-widest text-xs font-semibold text-gray-900">The Executive Board</p>
+            <div class="w-12 h-[1px] bg-gray-400"></div>
+        </div>
+    </section>
+
+    <!-- FOOTER (Same as main page) -->
+    <footer class="bg-zinc-950 text-white pt-20 pb-10 px-8 border-t border-white/10 mt-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-white/10 pb-16">
+            <div class="md:col-span-1">
+                <div class="serif-font text-2xl tracking-widest uppercase mb-6">
+                    Grand Oceans
+                    <span class="block text-[10px] font-sans tracking-[0.3em] text-yellow-500 mt-2">Hospitality</span>
+                </div>
+                <p class="text-zinc-400 text-sm font-light leading-relaxed">
+                    Setting the benchmark for premium hospitality and memorable guest experiences across Egypt.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Our Brands</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li><a href="sokhna.html" class="hover:text-yellow-500 transition">Grand Ocean Sokhna</a></li>
+                    <li><a href="index.html#brands" class="hover:text-yellow-500 transition">Stay Inn Hotels</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Corporate</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li><a href="about.html" class="hover:text-yellow-500 transition">About Us</a></li>
+                    <li><a href="careers.html" class="hover:text-yellow-500 transition">Careers</a></li>
+                    <li><a href="news.html" class="hover:text-yellow-500 transition">Press & News</a></li>
+                    <li><a href="contact.html" class="hover:text-yellow-500 transition">Contact Directory</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Headquarters</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li>Cairo, Egypt</li>
+                    <li>corporate@grandoceans.com</li>
+                    <li>02 24144441</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-8 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-widest text-zinc-500 font-light">
+            <p>&copy; 2026 Grand Oceans Hospitality Group. All rights reserved.</p>
+            <div class="space-x-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for 3D Scroll Reveal
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-3d').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

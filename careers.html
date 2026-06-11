@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers | Grand Oceans Hospitality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" integrity="sha512-RX/OFugIG/bvlqwqT/1z4hVf4y/w5xsh2yHDiP25A11e2E2kwe2O//j8//y+rRz3OQk1Zc6+cRzQO7gBfRjS4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FAFAFA; overflow-x: hidden; color: #111; }
+        h1, h2, h3, h4, .serif-font { font-family: 'Playfair Display', serif; }
+        
+        /* Navigation Hover Effect */
+        .nav-link { position: relative; display: inline-block; padding-bottom: 4px; }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 1px; bottom: 0; left: 0;
+            background-color: #ca8a04; transition: width 0.3s ease-in-out;
+        }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link.active-nav::after { width: 100%; }
+
+        .header-scrolled { background: rgba(10, 10, 10, 0.95) !important; box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding-top: 1rem !important; padding-bottom: 1rem !important; }
+
+        /* Cinematic Hero */
+        .hero-wrapper { position: relative; height: 80vh; z-index: 40; perspective: 1000px; transform-style: preserve-3d; overflow: hidden; }
+        .hero-bg {
+            position: absolute; inset: -5%;
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=2000&q=80');
+            background-size: cover; background-position: center;
+            animation: slowZoom 30s infinite alternate ease-in-out;
+        }
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* 3D Scroll Reveal Animation */
+        .reveal-3d { opacity: 0; transform: translateY(50px) rotateX(-5deg); transition: all 1s cubic-bezier(0.25, 1, 0.2, 1); }
+        .reveal-3d.active { opacity: 1; transform: translateY(0) rotateX(0deg); }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+
+        /* Glassmorphism Filters & Search */
+        .glass-panel { background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .custom-input-box { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white; cursor: pointer; transition: all 0.3s; position: relative; }
+        .custom-input-box:hover, .search-input:focus { background: rgba(255, 255, 255, 0.1); border-color: #ca8a04; outline: none; }
+        input:focus, textarea:focus { outline: none; border-color: #ca8a04 !important; background: rgba(255,255,255,0.1) !important; }
+        
+        /* Custom Dropdown Menus - FIXED Z-INDEX */
+        .dropdown-container { position: relative; }
+        .custom-dropdown-menu {
+            visibility: hidden; opacity: 0; transform: translateY(10px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: absolute; top: 100%; left: 0; width: 100%; background: #111; border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 4px; padding: 8px; z-index: 9999; /* Extremely high z-index to ensure it overlaps jobs */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.9); margin-top: 8px;
+        }
+        .custom-dropdown-menu.active { visibility: visible; opacity: 1; transform: translateY(0); }
+        .dropdown-item { padding: 12px 16px; border-radius: 4px; cursor: pointer; transition: all 0.2s; color: white; font-size: 0.875rem; }
+        .dropdown-item:hover { background: #ca8a04; color: black; font-weight: 600; }
+
+        /* Job Cards */
+        .job-card {
+            background: white; border: 1px solid #e5e5e5; border-radius: 4px; padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform-style: preserve-3d;
+            opacity: 1; transform: scale(1); position: relative; z-index: 10;
+        }
+        .job-card:hover { border-color: #ca8a04; box-shadow: 0 20px 40px rgba(0,0,0,0.08); transform: translateY(-5px); }
+        
+        /* Animation for Job Grid Filtering */
+        .job-hidden { display: none !important; }
+        .job-animating { animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+        .badge-culinary { background: #fef08a; color: #854d0e; }
+        .badge-management { background: #e0f2fe; color: #3f6212; }
+        .badge-frontoffice { background: #f3f4f6; color: #374151; }
+        .badge-wellness { background: #dcfce7; color: #166534; }
+
+        /* Modal Animation States */
+        #application-modal.show { opacity: 1; pointer-events: auto; }
+        #application-modal.show .modal-content { transform: scale(1) translateY(0); }
+        
+        /* Custom scrollbar for modal */
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        .modal-content::-webkit-scrollbar-thumb { background: #ca8a04; border-radius: 10px; }
+
+        /* Form Overlay Success */
+        #app-success-overlay {
+            position: absolute; inset: 0; background: rgba(15, 15, 15, 0.95); backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease; z-index: 50; border-radius: 1rem;
+        }
+        #app-success-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        /* Custom File Upload */
+        input[type="file"]::file-selector-button {
+            border: 1px solid rgba(255,255,255,0.2); background: transparent; padding: 0.5rem 1rem;
+            border-radius: 0.25rem; color: white; cursor: pointer; transition: all 0.3s; margin-right: 1rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        input[type="file"]::file-selector-button:hover { background: #ca8a04; border-color: #ca8a04; color: black; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="main-header" class="fixed top-0 w-full z-50 py-6 px-8 flex justify-between items-center text-white bg-gradient-to-b from-black/90 to-transparent backdrop-blur-md border-b border-white/10 transition-all duration-500">
+        <a href="index.html" class="serif-font text-2xl tracking-widest uppercase cursor-pointer flex flex-col hover:opacity-80 transition-opacity">
+            Grand Oceans
+            <span class="font-sans text-[9px] tracking-[0.4em] opacity-80 text-yellow-500 mt-1">Hospitality Group</span>
+        </a>
+        <nav class="hidden lg:flex space-x-8 text-[11px] font-semibold uppercase tracking-[0.2em] items-center">
+            <a href="index.html#home" class="nav-link hover:text-yellow-300 transition-colors duration-300">Home</a>
+            <a href="about.html" class="nav-link hover:text-yellow-300 transition-colors duration-300">About</a>
+            <div class="relative group py-4">
+                <span class="nav-link hover:text-yellow-300 transition-colors duration-300 flex items-center cursor-pointer">
+                    Our Hotels <i class="fa-solid fa-chevron-down ml-2 text-[8px]"></i>
+                </span>
+                <div class="absolute left-0 top-full w-56 bg-zinc-950/95 backdrop-blur-md border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 rounded-sm shadow-2xl">
+                    <a href="sokhna.html" class="block px-5 py-4 text-[10px] text-white/80 hover:text-yellow-400 hover:bg-white/5 border-b border-white/10 transition-colors">Grand Ocean Sokhna</a>
+                    <a href="stayinn.html" class="block px-5 py-4 text-[10px] text-white/80 hover:text-yellow-400 hover:bg-white/5 transition-colors">Stay Inn Hotels</a>
+                </div>
+            </div>
+            <a href="dining.html" class="nav-link hover:text-yellow-300 transition-colors duration-300">Dining</a>
+            <a href="news.html" class="nav-link hover:text-yellow-300 transition-colors duration-300">News</a>
+            <a href="careers.html" class="nav-link active-nav text-yellow-400 transition-colors duration-300">Careers</a>
+        </nav>
+        <div>
+            <a href="contact.html" class="bg-transparent border border-white/50 hover:border-yellow-500 hover:text-yellow-500 text-white px-8 py-3 text-[10px] uppercase tracking-widest font-bold transition-all">Client Portal</a>
+        </div>
+    </header>
+
+    <section class="hero-wrapper flex flex-col justify-center items-center text-center px-4">
+        <div class="hero-bg"></div>
+        <div class="relative z-10 flex flex-col items-center mt-20 reveal-3d active pointer-events-none">
+            <p class="text-yellow-500 uppercase tracking-[0.4em] text-xs font-semibold mb-6 drop-shadow-md">Careers</p>
+            <h1 class="text-6xl md:text-8xl text-white serif-font font-light mb-8 max-w-4xl leading-tight drop-shadow-2xl">
+                Shape the Future <br> <span class="italic text-yellow-400">of Hospitality.</span>
+            </h1>
+            <p class="text-zinc-300 font-light max-w-2xl text-lg mb-10">We are seeking passionate visionaries dedicated to the intuitive craft of mindful service.</p>
+        </div>
+        <a href="#open-roles" class="relative z-20 bg-yellow-600 text-white px-10 py-4 text-[10px] uppercase tracking-widest font-bold hover:bg-yellow-500 transition-all duration-300 shadow-[0_0_20px_rgba(202,138,4,0.4)]">
+            View Open Roles
+        </a>
+    </section>
+
+    <section class="py-32 px-4 md:px-8 max-w-7xl mx-auto">
+        <div class="text-center mb-20 reveal-3d">
+            <p class="text-yellow-600 uppercase tracking-[0.3em] text-[10px] font-semibold mb-4">Life at Grand Oceans</p>
+            <h2 class="serif-font text-4xl text-gray-900 mb-4">Why Join Our Vision?</h2>
+            <div class="w-12 h-0.5 bg-yellow-600 mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-10 border border-gray-100 shadow-xl rounded-sm reveal-3d" data-tilt data-tilt-max="3" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                <i class="fa-solid fa-arrow-trend-up text-3xl text-yellow-600 mb-6"></i>
+                <h3 class="serif-font text-2xl font-bold mb-4">Limitless Growth</h3>
+                <p class="text-gray-500 font-light text-sm leading-relaxed">We prioritize internal mobility. Our dedicated academy provides continuous training, allowing team members to seamlessly transition from operational roles to executive leadership.</p>
+            </div>
+            <div class="bg-white p-10 border border-gray-100 shadow-xl rounded-sm reveal-3d delay-100" data-tilt data-tilt-max="3" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                <i class="fa-solid fa-globe text-3xl text-yellow-600 mb-6"></i>
+                <h3 class="serif-font text-2xl font-bold mb-4">Global Standards</h3>
+                <p class="text-gray-500 font-light text-sm leading-relaxed">Work alongside internationally acclaimed Michelin-starred chefs, visionary architects, and luxury hospitality veterans across our expanding Egyptian portfolio.</p>
+            </div>
+            <div class="bg-white p-10 border border-gray-100 shadow-xl rounded-sm reveal-3d delay-200" data-tilt data-tilt-max="3" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                <i class="fa-solid fa-spa text-3xl text-yellow-600 mb-6"></i>
+                <h3 class="serif-font text-2xl font-bold mb-4">Holistic Well-being</h3>
+                <p class="text-gray-500 font-light text-sm leading-relaxed">Exceptional service starts with a healthy team. We offer premium healthcare, mental wellness programs, and complimentary access to resort amenities during off-hours.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="open-roles" class="py-32 px-4 md:px-8 bg-zinc-950 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16 reveal-3d">
+                <h2 class="serif-font text-4xl text-white mb-4">Current Opportunities</h2>
+                <div class="w-12 h-0.5 bg-yellow-600 mx-auto"></div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-lg mb-12 reveal-3d delay-100 relative z-[150]">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    
+                    <div class="relative">
+                        <input type="text" id="search-filter" placeholder="Search job title..." class="w-full bg-transparent border border-white/20 text-white p-4 rounded-sm text-sm search-input placeholder-white/40" onkeyup="applyFilters()">
+                        <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 transform -translate-y-1/2 text-white/40"></i>
+                    </div>
+
+                    <div class="dropdown-container">
+                        <div class="custom-input-box w-full p-4 rounded-sm flex justify-between items-center text-sm" onclick="toggleDropdown('location-dropdown')">
+                            <span id="location-display" class="font-light text-white/80">Location: All</span>
+                            <i class="fa-solid fa-chevron-down text-white/50 text-xs"></i>
+                        </div>
+                        <div id="location-dropdown" class="custom-dropdown-menu">
+                            <div class="dropdown-item" onclick="selectFilter('location', 'All', 'Location: All')">All Locations</div>
+                            <div class="dropdown-item" onclick="selectFilter('location', 'Grand Ocean Sokhna', 'Sokhna')">Grand Ocean Sokhna</div>
+                            <div class="dropdown-item" onclick="selectFilter('location', 'Stay Inn Pyramids', 'Pyramids')">Stay Inn Pyramids</div>
+                            <div class="dropdown-item" onclick="selectFilter('location', 'Stay Inn Cairo', 'Cairo')">Stay Inn Cairo</div>
+                            <div class="dropdown-item" onclick="selectFilter('location', 'Corporate HQ', 'Corporate HQ')">Corporate HQ (Nasr City)</div>
+                        </div>
+                    </div>
+
+                    <div class="dropdown-container">
+                        <div class="custom-input-box w-full p-4 rounded-sm flex justify-between items-center text-sm" onclick="toggleDropdown('dept-dropdown')">
+                            <span id="dept-display" class="font-light text-white/80">Dept: All</span>
+                            <i class="fa-solid fa-chevron-down text-white/50 text-xs"></i>
+                        </div>
+                        <div id="dept-dropdown" class="custom-dropdown-menu">
+                            <div class="dropdown-item" onclick="selectFilter('department', 'All', 'Dept: All')">All Departments</div>
+                            <div class="dropdown-item" onclick="selectFilter('department', 'Culinary', 'Culinary')">Culinary & F&B</div>
+                            <div class="dropdown-item" onclick="selectFilter('department', 'Front Office', 'Front Office')">Front Office</div>
+                            <div class="dropdown-item" onclick="selectFilter('department', 'Management', 'Management')">Management</div>
+                            <div class="dropdown-item" onclick="selectFilter('department', 'Wellness', 'Wellness')">Spa & Wellness</div>
+                        </div>
+                    </div>
+
+                    <div class="dropdown-container">
+                        <div class="custom-input-box w-full p-4 rounded-sm flex justify-between items-center text-sm" onclick="toggleDropdown('sort-dropdown')">
+                            <span id="sort-display" class="font-light text-white/80">Sort: Newest</span>
+                            <i class="fa-solid fa-sort text-white/50 text-xs"></i>
+                        </div>
+                        <div id="sort-dropdown" class="custom-dropdown-menu">
+                            <div class="dropdown-item" onclick="selectFilter('sort', 'newest', 'Sort: Newest')">Newest Postings</div>
+                            <div class="dropdown-item" onclick="selectFilter('sort', 'az', 'Sort: A-Z')">Title (A-Z)</div>
+                            <div class="dropdown-item" onclick="selectFilter('sort', 'za', 'Sort: Z-A')">Title (Z-A)</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="job-board" class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal-3d delay-200 relative z-10">
+                </div>
+            
+            <div id="empty-state" class="hidden text-center py-20 border border-dashed border-white/20 rounded-lg">
+                <i class="fa-solid fa-briefcase text-4xl text-white/20 mb-4"></i>
+                <h3 class="text-white text-xl font-bold mb-2">No positions found</h3>
+                <p class="text-white/50 font-light text-sm">Try adjusting your filters or search term.</p>
+                <button onclick="resetFilters()" class="mt-6 text-yellow-500 text-xs uppercase tracking-widest border-b border-yellow-500 pb-1 hover:text-yellow-400 transition-colors">Reset Filters</button>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="application-modal" class="fixed inset-0 z-[200] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-500">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeApplicationModal()"></div>
+        
+        <div class="relative glass-form rounded-2xl w-[90%] max-w-2xl max-h-[90vh] overflow-y-auto transform scale-95 translate-y-8 transition-all duration-700 modal-content bg-[#111]">
+            
+            <button onclick="closeApplicationModal()" class="absolute top-6 right-6 w-10 h-10 bg-white/10 text-white rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors z-20">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="p-8 md:p-12 relative">
+                <p class="text-yellow-600 uppercase tracking-[0.2em] text-[10px] font-bold mb-2">Application Portal</p>
+                <h2 id="apply-job-title" class="serif-font text-3xl md:text-4xl font-bold text-white mb-8 border-b border-white/10 pb-6">
+                    Job Title Goes Here
+                </h2>
+
+                <form id="apply-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[10px] text-white/70 uppercase tracking-[0.2em] mb-2">First Name</label>
+                            <input type="text" required class="custom-input-box w-full p-4 rounded-sm text-sm" placeholder="John">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-white/70 uppercase tracking-[0.2em] mb-2">Last Name</label>
+                            <input type="text" required class="custom-input-box w-full p-4 rounded-sm text-sm" placeholder="Doe">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[10px] text-white/70 uppercase tracking-[0.2em] mb-2">Email Address</label>
+                            <input type="email" required class="custom-input-box w-full p-4 rounded-sm text-sm" placeholder="john@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-white/70 uppercase tracking-[0.2em] mb-2">Phone Number</label>
+                            <input type="tel" required class="custom-input-box w-full p-4 rounded-sm text-sm" placeholder="+20 100 000 0000">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] text-white/70 uppercase tracking-[0.2em] mb-2">Resume / CV (PDF)</label>
+                        <input type="file" accept=".pdf,.doc,.docx" required class="custom-input-box w-full p-3 rounded-sm text-sm text-white/50 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-bold file:bg-white/10 file:text-white hover:file:bg-yellow-600 transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] text-white/70 uppercase tracking-[0.2em] mb-2">Cover Letter / Note</label>
+                        <textarea rows="4" class="custom-input-box w-full p-4 rounded-sm text-sm resize-none" placeholder="Tell us why you are a great fit..."></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-yellow-600 text-white p-5 rounded-sm uppercase text-xs tracking-widest font-bold hover:bg-yellow-500 hover:shadow-[0_0_30px_rgba(202,138,4,0.4)] transition-all">
+                        Submit Application
+                    </button>
+                </form>
+
+                <div id="app-success-overlay" class="text-center p-10">
+                    <div class="w-20 h-20 bg-yellow-600/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-yellow-600/50 shadow-[0_0_30px_rgba(202,138,4,0.3)]">
+                        <i class="fa-solid fa-paper-plane text-3xl text-yellow-500"></i>
+                    </div>
+                    <h3 class="serif-font text-3xl text-white mb-2">Application Received</h3>
+                    <p class="text-zinc-400 font-light text-sm mb-8 leading-relaxed max-w-sm mx-auto">
+                        Thank you for applying. Our talent acquisition team will review your profile and contact you shortly.
+                    </p>
+                    <button onclick="closeApplicationModal()" class="border border-white/30 text-white px-8 py-3 rounded-sm text-[10px] uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-colors">
+                        Return to Careers
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-zinc-950 text-white pt-20 pb-10 px-8 border-t border-white/10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-white/10 pb-16">
+            <div class="md:col-span-1">
+                <div class="serif-font text-2xl tracking-widest uppercase mb-6">
+                    Grand Oceans
+                    <span class="block text-[10px] font-sans tracking-[0.3em] text-yellow-500 mt-2">Hospitality</span>
+                </div>
+                <p class="text-zinc-400 text-sm font-light leading-relaxed">Setting the benchmark for premium hospitality and memorable guest experiences across Egypt.</p>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Our Brands</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li><a href="sokhna.html" class="hover:text-yellow-500 transition">Grand Ocean Sokhna</a></li>
+                    <li><a href="stayinn.html" class="hover:text-yellow-500 transition">Stay Inn Hotels</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Corporate</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li><a href="about.html" class="hover:text-yellow-500 transition">About Us</a></li>
+                    <li><a href="careers.html" class="hover:text-yellow-500 transition">Careers</a></li>
+                    <li><a href="contact.html" class="hover:text-yellow-500 transition">Contact Directory</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.2em] font-semibold mb-6 text-white">Headquarters</h4>
+                <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                    <li>Nasr City, Cairo, Egypt</li>
+                    <li>corporate@grandoceans.com</li>
+                    <li>02 24144441</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-8 flex justify-between items-center text-[10px] uppercase tracking-widest text-zinc-500 font-light">
+            <p>&copy; 2026 Grand Oceans Hospitality Group. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Core Navigation & Animation ---
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) header.classList.add('header-scrolled');
+            else header.classList.remove('header-scrolled');
+        });
+
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.reveal-3d').forEach(el => observer.observe(el));
+
+        // --- Custom Dropdown Logic ---
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            const isActive = dropdown.classList.contains('active');
+            document.querySelectorAll('.custom-dropdown-menu').forEach(menu => menu.classList.remove('active'));
+            if (!isActive) dropdown.classList.add('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown-container')) {
+                document.querySelectorAll('.custom-dropdown-menu').forEach(menu => menu.classList.remove('active'));
+            }
+        });
+
+        // --- Application Modal Logic ---
+        const applicationModal = document.getElementById('application-modal');
+        const applyForm = document.getElementById('apply-form');
+        const appSuccessOverlay = document.getElementById('app-success-overlay');
+
+        function openApplicationModal(jobTitle) {
+            // Inject dynamic job title into the modal
+            document.getElementById('apply-job-title').innerText = jobTitle;
+            
+            // Show modal
+            applicationModal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Stop background scrolling
+        }
+
+        function closeApplicationModal() {
+            applicationModal.classList.remove('show');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+            
+            // Reset form and overlay states after closing animation finishes
+            setTimeout(() => {
+                applyForm.reset();
+                appSuccessOverlay.classList.remove('active');
+                applyForm.style.opacity = '1';
+                applyForm.style.visibility = 'visible';
+            }, 500);
+        }
+
+        // Handle Form Submission
+        applyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Fade out form and activate success overlay
+            applyForm.style.opacity = '0';
+            applyForm.style.visibility = 'hidden';
+            setTimeout(() => {
+                appSuccessOverlay.classList.add('active');
+            }, 300);
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', function(event){
+            if(event.key === "Escape" && applicationModal.classList.contains('show')){
+                closeApplicationModal();
+            }
+        });
+
+
+        // --- ADVANCED JOB BOARD ENGINE ---
+
+        // 1. Master Job Database
+        const jobDatabase = [
+            { id: 1, title: "Executive Sous Chef", location: "Stay Inn Cairo", department: "Culinary", type: "Full-Time", dateAdded: "2026-06-10", desc: "Lead the culinary team under our Michelin-starred Executive Chef." },
+            { id: 2, title: "Guest Experience Director", location: "Grand Ocean Sokhna", department: "Management", type: "Full-Time", dateAdded: "2026-06-08", desc: "Oversee the flawless execution of 5-star guest services." },
+            { id: 3, title: "Holistic Spa Therapist", location: "Grand Ocean Sokhna", department: "Wellness", type: "Full-Time", dateAdded: "2026-06-05", desc: "Deliver premium thalassotherapy and ancient Egyptian healing treatments." },
+            { id: 4, title: "Digital Marketing Manager", location: "Corporate HQ", department: "Management", type: "Full-Time", dateAdded: "2026-06-11", desc: "Drive the global digital presence for all Grand Oceans brands." },
+            { id: 5, title: "Head Sommelier", location: "Stay Inn Pyramids", department: "Culinary", type: "Full-Time", dateAdded: "2026-06-01", desc: "Curate the wine cellar for The Horizon Lounge and main dining venues." },
+            { id: 6, title: "Front Desk Supervisor", location: "Stay Inn Pyramids", department: "Front Office", type: "Full-Time", dateAdded: "2026-05-28", desc: "Manage check-ins, VIP arrivals, and the daily operations of the front desk." },
+            { id: 7, title: "Pastry Chef", location: "Stay Inn Cairo", department: "Culinary", type: "Full-Time", dateAdded: "2026-06-09", desc: "Craft artisanal Italian pastries and desserts for Il Mulino." },
+            { id: 8, title: "Night Auditor", location: "Grand Ocean Sokhna", department: "Front Office", type: "Full-Time", dateAdded: "2026-06-02", desc: "Ensure accurate financial reporting and superior overnight guest support." }
+        ];
+
+        // 2. State Management
+        let currentFilters = { search: "", location: "All", department: "All", sort: "newest" };
+
+        // 3. Filter Application Logic
+        function selectFilter(filterType, actualValue, displayValue) {
+            let displayElementId;
+            if (filterType === 'location') displayElementId = 'location-display';
+            if (filterType === 'department') displayElementId = 'dept-display';
+            if (filterType === 'sort') displayElementId = 'sort-display';
+            
+            document.getElementById(displayElementId).innerText = displayValue;
+            document.querySelectorAll('.custom-dropdown-menu').forEach(menu => menu.classList.remove('active'));
+
+            currentFilters[filterType] = actualValue;
+            applyFilters();
+        }
+
+        function resetFilters() {
+            document.getElementById('search-filter').value = "";
+            currentFilters = { search: "", location: "All", department: "All", sort: "newest" };
+            
+            document.getElementById('location-display').innerText = "Location: All";
+            document.getElementById('dept-display').innerText = "Dept: All";
+            document.getElementById('sort-display').innerText = "Sort: Newest";
+            
+            applyFilters();
+        }
+
+        function applyFilters() {
+            currentFilters.search = document.getElementById('search-filter').value.toLowerCase();
+
+            let filteredJobs = jobDatabase.filter(job => {
+                const matchSearch = job.title.toLowerCase().includes(currentFilters.search) || job.desc.toLowerCase().includes(currentFilters.search);
+                const matchLoc = currentFilters.location === "All" || job.location === currentFilters.location;
+                const matchDept = currentFilters.department === "All" || job.department === currentFilters.department;
+                return matchSearch && matchLoc && matchDept;
+            });
+
+            if (currentFilters.sort === 'newest') {
+                filteredJobs.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+            } else if (currentFilters.sort === 'az') {
+                filteredJobs.sort((a, b) => a.title.localeCompare(b.title));
+            } else if (currentFilters.sort === 'za') {
+                filteredJobs.sort((a, b) => b.title.localeCompare(a.title));
+            }
+
+            renderJobBoard(filteredJobs);
+        }
+
+        // 4. Render DOM Elements
+        function getBadgeClass(dept) {
+            if(dept === 'Culinary') return 'badge-culinary';
+            if(dept === 'Management') return 'badge-management';
+            if(dept === 'Wellness') return 'badge-wellness';
+            return 'badge-frontoffice';
+        }
+
+        function renderJobBoard(jobsArray) {
+            const board = document.getElementById('job-board');
+            const emptyState = document.getElementById('empty-state');
+            
+            board.innerHTML = "";
+
+            if (jobsArray.length === 0) {
+                board.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                board.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+            }
+
+            jobsArray.forEach((job, index) => {
+                const badgeClass = getBadgeClass(job.department);
+                const postDate = new Date(job.dateAdded);
+                const isNew = postDate > new Date('2026-06-07');
+                const newBadge = isNew ? `<span class="bg-yellow-600 text-white px-2 py-0.5 rounded text-[8px] uppercase font-bold ml-2 animate-pulse">New</span>` : '';
+
+                const cardHTML = `
+                    <div class="job-card job-animating" style="animation-delay: ${index * 0.05}s">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="badge ${badgeClass}">${job.department}</span>
+                            <span class="text-xs text-gray-400 font-semibold"><i class="fa-regular fa-clock mr-1"></i> ${job.type}</span>
+                        </div>
+                        <h3 class="serif-font text-2xl font-bold text-gray-900 mb-2 flex items-center">
+                            ${job.title} ${newBadge}
+                        </h3>
+                        <p class="text-sm text-gray-500 mb-4"><i class="fa-solid fa-location-dot mr-2 text-yellow-600"></i>${job.location}</p>
+                        <p class="text-gray-600 text-sm font-light leading-relaxed mb-6 border-b border-gray-100 pb-6">
+                            ${job.desc}
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <button onclick="openApplicationModal('${job.title}')" class="text-xs uppercase tracking-widest font-bold text-black border-b border-black pb-1 hover:text-yellow-600 hover:border-yellow-600 transition-colors">
+                                Apply Now
+                            </button>
+                            <span class="text-[10px] text-gray-400 uppercase">Posted: ${job.dateAdded}</span>
+                        </div>
+                    </div>
+                `;
+                board.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        // 5. Initialize Board on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            applyFilters();
+        });
+
+    </script>
+</body>
+</html>
